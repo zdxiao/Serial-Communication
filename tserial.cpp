@@ -38,7 +38,7 @@
 #include <process.h>
 #include <conio.h>
 #include <windows.h>
-#include <stdafx.h>
+//#include <stdafx.h>
 #include "tserial.h"
 
 /* -------------------------------------------------------------------- */
@@ -141,7 +141,7 @@ int  Tserial::connect          (char *port_arg, int rate_arg, serial_parity pari
         dcb.EvtChar         = 0;
         
         /* -------------------------------------------------------------------- */
-        serial_handle    = CreateFile(port, GENERIC_READ | GENERIC_WRITE,
+        serial_handle    = CreateFileA(port, GENERIC_READ | GENERIC_WRITE,
                                0, NULL, OPEN_EXISTING,NULL,NULL);
                    // opening serial port
 

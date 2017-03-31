@@ -44,4 +44,12 @@ class serial{
 		printf("%c",data);
 		
 	}
+
+	int get_data(char *buffer)
+	{
+		int s = com->getArray(buffer, 99);
+		buffer[99] = '\0';
+		//printf("%c", c);
+		return s;
+	}
 };
