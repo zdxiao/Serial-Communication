@@ -6,6 +6,7 @@
 #include <iostream>
 #include "capture_imu.h"
 #include <sstream>
+#include <chrono>
 
 CaptureIMU comm; //serial is a class type defined in these files, used for referring to the communication device
 void main() {
@@ -18,13 +19,18 @@ while (1)
 {
 	char buffer[100];
 	double acce[3] = { 0 }, gyro[3] = { 0 }, mag[3] = { 0 };
-	comm.get_imudata(mag, acce, gyro);
+	while(!comm.get_imudata(mag, acce, gyro))
+	{
+		std::cout << "get imu data wrong!" << std::endl;
+	}
 	std::ostringstream ostream;
-	ostream << mag[0] << "," << mag[1] << "," << mag[2] << ","
-		<< acce[0] << "," << acce[1] << "," << acce[2] << ","
+	long long timestamp = (((std::chrono::duration_cast<std::chrono::milliseconds >(std::chrono::system_clock::now().time_since_epoch())).count()));
+	ostream << timestamp << ",\t"
+		<< mag[0] << "," << mag[1] << "," << mag[2] << ",\t"
+		<< acce[0] << "," << acce[1] << "," << acce[2] << ",\t"
 		<< gyro[0] << "," << gyro[1] << "," << gyro[2] << " " 
 		<< std::endl;
-	std::cout << ostream.str();
+	//std::cout << ostream.str();
 	file << ostream.str();
 }
 file.close();

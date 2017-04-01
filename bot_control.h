@@ -5,7 +5,7 @@
 
 class serial{
 
-  private:
+  protected:
         // private attributes
 		Tserial *com;
   public:
