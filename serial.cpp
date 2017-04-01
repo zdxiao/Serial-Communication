@@ -4,8 +4,10 @@
 #include "bot_control.h"
 #include <fstream>
 #include <iostream>
+#include "capture_imu.h"
+#include <sstream>
 
-serial comm; //serial is a class type defined in these files, used for referring to the communication device
+CaptureIMU comm; //serial is a class type defined in these files, used for referring to the communication device
 void main() {
 char data; //To store the character to send
 comm.startDevice("COM4", 921600);
@@ -15,9 +17,15 @@ std::ofstream file("imu.txt");
 while (1)
 {
 	char buffer[100];
-	char c = comm.get_data(buffer);
-	std::cout << buffer << std::endl;
-	file << buffer << std::endl;
+	double acce[3] = { 0 }, gyro[3] = { 0 }, mag[3] = { 0 };
+	comm.get_imudata(mag, acce, gyro);
+	std::ostringstream ostream;
+	ostream << mag[0] << "," << mag[1] << "," << mag[2] << ","
+		<< acce[0] << "," << acce[1] << "," << acce[2] << ","
+		<< gyro[0] << "," << gyro[1] << "," << gyro[2] << " " 
+		<< std::endl;
+	std::cout << ostream.str();
+	file << ostream.str();
 }
 file.close();
 comm.stopDevice(); //The device is closed down

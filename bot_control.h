@@ -1,3 +1,6 @@
+#ifndef BOT_CONTROL_H
+#define BOT_CONTROL_H
+
 #include "tserial.h"
 
 class serial{
@@ -45,11 +48,12 @@ class serial{
 		
 	}
 
-	int get_data(char *buffer)
+	char get_char()
 	{
-		int s = com->getArray(buffer, 99);
-		buffer[99] = '\0';
+		char c = com->getChar();
 		//printf("%c", c);
-		return s;
+		return c;
 	}
 };
+
+#endif
